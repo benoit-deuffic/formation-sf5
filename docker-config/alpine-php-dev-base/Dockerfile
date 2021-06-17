@@ -1,4 +1,4 @@
-FROM php:fpm-alpine3.11
+FROM php:7.4.20-fpm-alpine
 
 # Install packages
 RUN apk update \
@@ -31,8 +31,6 @@ RUN apk update \
     && \
     # pecl PHP extensions
     pecl install \
-        imagick-3.4.4 \
-        redis \
         xdebug-2.8.1 \
     && \
     # Configure PHP extensions
@@ -61,8 +59,6 @@ RUN apk update \
     && \
     # Enable PHP extensions
     docker-php-ext-enable \
-        imagick \
-        redis \
         xdebug
 
 # Append our php.ini overrides to the end of the file

@@ -1,6 +1,6 @@
 FROM composer:latest as composer
 
-FROM bdeuffic/alpine-php-dev-base
+FROM bdeuffic/alpine3.13-php-7.4.20-dev-base
 
 # Install packages
 RUN apk update \
@@ -12,7 +12,6 @@ RUN apk update \
     && \
     # Install PHP extensions
     docker-php-ext-install \
-        pdo_mysql \
         pdo_pgsql \
     && \
     # Install Composer
@@ -20,7 +19,7 @@ RUN apk update \
 
 COPY --from=composer  /usr/bin/composer /usr/local/bin/composer
 
-RUN composer global require hirak/prestissimo --no-plugins --no-scripts
+#RUN composer global require hirak/prestissimo --no-plugins --no-scripts
 
 ENV PATH=/var/www/project/app/vendor/bin:$PATH
 ENV COMPOSER_MEMORY_LIMIT=-1
@@ -53,10 +52,16 @@ CMD if [ ! -f "./composer.lock" ]; then \
     if [ ! -d ./vendor -o ! "$(ls -A ./vendor)" ]; then \
         composer install --no-scripts --optimize-autoloader --no-interaction; \
     fi \
+    if [ ! -f "./composer.json" && ! -d ./vendor -o ! "$(ls -A ./vendor)" ]; then \
+       cd ../ && composer create-project symfony/website-skeleton app; \
+       cd app; \       
+    fi \
     && \
     chown -R www-data:www-data /var/www/project/app/vendor \
     && \
     chown -R www-data:www-data /var/www/project/app/var \
+    && \
+    chown -R www-data:www-data /var/www/project/app/public \
     && \
     composer update 
     
