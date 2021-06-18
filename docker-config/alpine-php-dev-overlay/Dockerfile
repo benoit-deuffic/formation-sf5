@@ -36,7 +36,7 @@ CMD mkdir -p /var/www/project/app/var/cache \
     && \
     chown -R www-data:www-data /var/www/project/app/var
 
-WORKDIR /var/www/project/app
+#WORKDIR /var/www/project/app
 
 CMD ln -s /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
@@ -45,16 +45,12 @@ CMD ln -s /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 # - If `composer.lock` is missing, it will update to the latest dependencies
 #   and create the `composer.lock` file
 # Force permissions, composer update , and start php-fpm
-CMD if [ ! -f "./composer.lock" ]; then \
-        composer install --no-scripts --optimize-autoloader --no-interaction; \
+CMD if [ ! -f "./app/composer.lock" ]; then \
+        cd app && composer install --no-scripts --optimize-autoloader --no-interaction; \
     fi \
     && \
-    if [ ! -d ./vendor -o ! "$(ls -A ./vendor)" ]; then \
-        composer install --no-scripts --optimize-autoloader --no-interaction; \
-    fi \
-    if [ ! -f "./composer.json" && ! -d ./vendor -o ! "$(ls -A ./vendor)" ]; then \
-       cd ../ && composer create-project symfony/website-skeleton app; \
-       cd app; \       
+    if [ ! -d ./app/vendor -o ! "$(ls -A ./app/vendor)" ]; then \
+        cd app && composer install --no-scripts --optimize-autoloader --no-interaction; \
     fi \
     && \
     chown -R www-data:www-data /var/www/project/app/vendor \

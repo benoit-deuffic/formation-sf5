@@ -28,7 +28,7 @@ services:
     links:
       - pgsql
     volumes:
-      - ./app:/var/www/project:consistent
+        - ./:/var/www/project:consistent
         #      - ./app/vendor:/var/www/project/app/vendor:delegated
         #- ./app/var/logs:/var/www/project/app/var/logs:delegated
         #- ./app/var/cache:/var/www/project/app/var/cache:delegated
