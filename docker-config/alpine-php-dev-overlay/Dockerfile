@@ -26,11 +26,6 @@ ENV COMPOSER_MEMORY_LIMIT=-1
 
 WORKDIR /var/www/project
 
-# Create a symfony 4.4 complete project
-RUN if [ ! -d ./app -o ! "$(ls -A ./app)" ]; then \
-      composer create-project symfony/website-skeleton ./app ^5.2; \
-    fi
-
 # Create the cache directory and make it writeable by PHP
 CMD mkdir -p /var/www/project/app/var/cache \ 
     && \
