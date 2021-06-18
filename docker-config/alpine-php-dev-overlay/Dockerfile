@@ -28,7 +28,7 @@ WORKDIR /var/www/project
 
 # Create a symfony 4.4 complete project
 RUN if [ ! -d ./app -o ! "$(ls -A ./app)" ]; then \
-      composer create-project symfony/website-skeleton app ^4.4; \
+      composer create-project symfony/website-skeleton ./app ^5.2; \
     fi
 
 # Create the cache directory and make it writeable by PHP

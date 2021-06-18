@@ -53,6 +53,7 @@ RUN apt-get update \
         sysvmsg \
         sysvsem \
         sysvshm \
+        xml \
         zip \
     && \
     # Enable PHP extensions
